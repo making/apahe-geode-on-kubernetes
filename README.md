@@ -1,6 +1,6 @@
 # [Apache Geode](https://geode.apache.org) on Kubernetes
 
-This instructions assume stable [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) (k8s 1.9+).
+This instruction assumes stable [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) (k8s 1.9+).
 
 ```
 kubectl apply -f .
