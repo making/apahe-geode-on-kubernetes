@@ -27,8 +27,18 @@ Successfully connected to: GemFire Manager HTTP service @ org.apache.geode.manag
 gfsh>start pulse --url=http://127.0.0.1:31254/pulse
 Launched Geode Pulse
 
-gfsh>
+gfsh>list members
+    Name     | Id
+------------ | ---------------------------------------------
+Coordinator: | 10.1.0.250(locator-0:55:locator)<ec><v0>:1024
+locator-0    | 10.1.0.250(locator-0:55:locator)<ec><v0>:1024
+server-0     | 10.1.0.251(server-0:55)<v10>:1024
+locator-1    | 10.1.0.252(locator-1:56:locator)<ec><v1>:1024
+server-1     | 10.1.0.253(server-1:55)<v11>:1024
 ```
 
-![image](https://user-images.githubusercontent.com/106908/35867644-9b85f0b0-0b9d-11e8-89b4-1ac386beeabb.png)
+![image](https://user-images.githubusercontent.com/106908/35868113-f73535e6-0b9e-11e8-9fac-3df2bf58a6a2.png)
 
+`admin`/`admin`
+
+![image](https://user-images.githubusercontent.com/106908/35868131-01d96b48-0b9f-11e8-8dac-9468e558e78f.png)
