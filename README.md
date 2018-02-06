@@ -3,7 +3,35 @@
 This instruction assumes stable [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) (k8s 1.9+).
 
 ```
-kubectl apply -f .
+$ kubectl apply -f .
+$ kubectl get all,pv,pvc
+NAME                   DESIRED   CURRENT   AGE
+statefulsets/locator   2         2         1h
+statefulsets/server    2         2         1h
+
+NAME           READY     STATUS    RESTARTS   AGE
+po/locator-0   1/1       Running   0          1h
+po/locator-1   1/1       Running   0          1h
+po/server-0    1/1       Running   0          1h
+po/server-1    1/1       Running   0          1h
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+svc/kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP          3d
+svc/locator          ClusterIP   None            <none>        10334/TCP        1h
+svc/locator-public   NodePort    10.111.229.15   <none>        7070:31254/TCP   1h
+svc/server           ClusterIP   None            <none>        40404/TCP        1h
+
+NAME                                          CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                          STORAGECLASS   REASON    AGE
+pv/pvc-332360b6-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-locator-0   hostpath                 1h
+pv/pvc-332be29b-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-server-0    hostpath                 1h
+pv/pvc-345a7af5-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-locator-1   hostpath                 1h
+pv/pvc-383a1330-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-server-1    hostpath                 1h
+
+NAME                       STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+pvc/geode-data-locator-0   Bound     pvc-332360b6-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
+pvc/geode-data-locator-1   Bound     pvc-345a7af5-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
+pvc/geode-data-server-0    Bound     pvc-332be29b-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
+pvc/geode-data-server-1    Bound     pvc-383a1330-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
 ```
 
 ``` sh
