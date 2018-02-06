@@ -1,5 +1,6 @@
 # Apache Geode on Kubernetes
 
+This instructions assume stable StatefulSets (k8s 1.9+).
 
 ```
 kubectl apply -f .
