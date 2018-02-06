@@ -18,7 +18,7 @@ po/server-1    1/1       Running   0          1h
 NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 svc/kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP          3d
 svc/locator          ClusterIP   None            <none>        10334/TCP        1h
-svc/locator-public   NodePort    10.111.229.15   <none>        7070:31254/TCP   1h
+svc/locator-public   NodePort    10.111.229.15   <none>        7070:32609/TCP   1h
 svc/server           ClusterIP   None            <none>        40404/TCP        1h
 
 NAME                                          CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                          STORAGECLASS   REASON    AGE
@@ -37,8 +37,8 @@ pvc/geode-data-server-1    Bound     pvc-383a1330-0b53-11e8-8151-025000000001   
 ``` sh
 $ ./help.sh
 gfsh
-connect --use-http=true --url=http://127.0.0.1:31254/geode-mgmt/v1
-start pulse --url=http://127.0.0.1:31254/pulse
+connect --use-http=true --url=http://127.0.0.1:32609/geode-mgmt/v1
+start pulse --url=http://127.0.0.1:32609/pulse
 ```
 
 ```
@@ -50,10 +50,10 @@ $ gfsh
 /______/_/      /______/_/    /_/    1.4.0
 
 Monitor and Manage Apache Geode
-gfsh>connect --use-http=true --url=http://127.0.0.1:31254/geode-mgmt/v1
+gfsh>connect --use-http=true --url=http://127.0.0.1:32609/geode-mgmt/v1
 Successfully connected to: GemFire Manager HTTP service @ org.apache.geode.management.internal.web.http.support.HttpRequester@70b012ca
 
-gfsh>start pulse --url=http://127.0.0.1:31254/pulse
+gfsh>start pulse --url=http://127.0.0.1:32609/pulse
 Launched Geode Pulse
 
 gfsh>list members
