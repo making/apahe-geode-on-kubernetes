@@ -6,7 +6,7 @@ spec:
   ports:
   - port: 7070
     name: http
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: locator
 ---
@@ -51,7 +51,7 @@ spec:
               --port=10334 \
               --properties-file=/root/geode.properties && \
           while true; do
-            sleep 10
+            sleep 2
           done
         ports:
         - containerPort: 10334

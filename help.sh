@@ -10,8 +10,11 @@ if [[ $type == "NodePort" ]] ; then
 else
   address=$(kubectl get svc locator-public -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   if [[ $address == "" ]] ; then
-    echo "External IP is not yet available, try in a few ..."
-    exit 1
+    address=$(kubectl get svc locator-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    if [[ $address == "" ]] ; then
+      echo "External IP is not yet available, try in a few ..."
+      exit 1
+    fi
   fi
   port=$(kubectl get svc locator-public -o jsonpath='{.spec.ports[?(@.name == "http")].port}')
 fi

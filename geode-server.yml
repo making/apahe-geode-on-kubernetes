@@ -40,7 +40,7 @@ spec:
               --properties-file=/root/geode.properties \
               --cache-xml-file=/server-config/cache.xml && \
           while true; do
-            sleep 10
+            sleep 2
           done
         ports:
         - containerPort: 40404
@@ -100,7 +100,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
+          storage: 5Gi
 ---
 apiVersion: v1
 kind: ConfigMap
