@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
       - name: locator
-        image: apachegeode/geode:1.4.0
+        image: apachegeode/geode:1.6.0
         command:
         - sh
         - -c

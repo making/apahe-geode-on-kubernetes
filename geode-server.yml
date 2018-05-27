@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: apachegeode/geode:1.4.0
+        image: apachegeode/geode:1.6.0
         command:
         - sh
         - -c
