@@ -3,35 +3,38 @@
 This instruction assumes stable [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) (k8s 1.9+).
 
 ```
+$ kubectl create ns geode
 $ kubectl apply -f .
-$ kubectl get all,pv,pvc
-NAME                   DESIRED   CURRENT   AGE
-statefulsets/locator   2         2         1h
-statefulsets/server    2         2         1h
+$ kubectl get all,pv,pvc -n geode -o wide
+NAME            READY   STATUS    RESTARTS   AGE     IP              NODE                                          NOMINATED NODE   READINESS GATES
+pod/locator-0   1/1     Running   0          5m59s   10.200.2.8      ip-10-0-9-5.ap-northeast-1.compute.internal   <none>           <none>
+pod/locator-1   1/1     Running   0          3m35s   10.200.74.116   ip-10-0-8-6.ap-northeast-1.compute.internal   <none>           <none>
+pod/server-0    1/1     Running   4          5m59s   10.200.74.115   ip-10-0-8-6.ap-northeast-1.compute.internal   <none>           <none>
+pod/server-1    1/1     Running   0          5m21s   10.200.2.7      ip-10-0-9-5.ap-northeast-1.compute.internal   <none>           <none>
 
-NAME           READY     STATUS    RESTARTS   AGE
-po/locator-0   1/1       Running   0          1h
-po/locator-1   1/1       Running   0          1h
-po/server-0    1/1       Running   0          1h
-po/server-1    1/1       Running   0          1h
+NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP                                                                    PORT(S)          AGE     SELECTOR
+service/locator          ClusterIP      None            <none>                                                                         10334/TCP        8m44s   app=locator
+service/locator-public   LoadBalancer   10.100.200.24   aa2815f853d1d11e9a42606dd4042512-1956244383.ap-northeast-1.elb.amazonaws.com   7070:30065/TCP   8m44s   app=locator
+service/server           ClusterIP      None            <none>                                                                         40404/TCP        8m44s   app=server
 
-NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-svc/kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP          3d
-svc/locator          ClusterIP   None            <none>        10334/TCP        1h
-svc/locator-public   NodePort    10.111.229.15   <none>        7070:32609/TCP   1h
-svc/server           ClusterIP   None            <none>        40404/TCP        1h
+NAME                       READY   AGE     CONTAINERS   IMAGES
+statefulset.apps/locator   2/2     5m59s   locator      apachegeode/geode:1.8.0
+statefulset.apps/server    2/2     5m59s   server       apachegeode/geode:1.8.0
 
-NAME                                          CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                          STORAGECLASS   REASON    AGE
-pv/pvc-332360b6-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-locator-0   hostpath                 1h
-pv/pvc-332be29b-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-server-0    hostpath                 1h
-pv/pvc-345a7af5-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-locator-1   hostpath                 1h
-pv/pvc-383a1330-0b53-11e8-8151-025000000001   1Gi        RWO            Delete           Bound     default/geode-data-server-1    hostpath                 1h
+NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                                  STORAGECLASS   REASON   AGE
+persistentvolume/pvc-14f023e7-3745-11e9-a426-06dd40425126   8Gi        RWO            Delete           Bound    spinnaker/redis-data-spinnaker-redis-master-0          standard                7d10h
+persistentvolume/pvc-15097846-3745-11e9-a426-06dd40425126   10Gi       RWO            Delete           Bound    spinnaker/halyard-home-spinnaker-spinnaker-halyard-0   standard                7d10h
+persistentvolume/pvc-1baebacf-3d1e-11e9-a426-06dd40425126   5Gi        RWO            Delete           Bound    geode/geode-data-server-1                              standard                5m11s
+persistentvolume/pvc-5b2ca560-3d1e-11e9-a426-06dd40425126   1Gi        RWO            Delete           Bound    geode/geode-data-locator-1                             standard                3m34s
+persistentvolume/pvc-811138b3-17de-11e9-bf29-065aa5e66230   10Gi       RWO            Delete           Bound    monitoring/prometheus-k8s-db-prometheus-k8s-0          standard                47d
+persistentvolume/pvc-a294793c-3d1d-11e9-a426-06dd40425126   1Gi        RWO            Delete           Bound    geode/geode-data-locator-0                             standard                8m41s
+persistentvolume/pvc-a2ce2dcf-3d1d-11e9-a426-06dd40425126   5Gi        RWO            Delete           Bound    geode/geode-data-server-0                              standard                8m43s
 
-NAME                       STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-pvc/geode-data-locator-0   Bound     pvc-332360b6-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
-pvc/geode-data-locator-1   Bound     pvc-345a7af5-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
-pvc/geode-data-server-0    Bound     pvc-332be29b-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
-pvc/geode-data-server-1    Bound     pvc-383a1330-0b53-11e8-8151-025000000001   1Gi        RWO            hostpath       1h
+NAME                                         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/geode-data-locator-0   Bound    pvc-a294793c-3d1d-11e9-a426-06dd40425126   1Gi        RWO            standard       8m44s
+persistentvolumeclaim/geode-data-locator-1   Bound    pvc-5b2ca560-3d1e-11e9-a426-06dd40425126   1Gi        RWO            standard       3m35s
+persistentvolumeclaim/geode-data-server-0    Bound    pvc-a2ce2dcf-3d1d-11e9-a426-06dd40425126   5Gi        RWO            standard       8m44s
+persistentvolumeclaim/geode-data-server-1    Bound    pvc-1baebacf-3d1e-11e9-a426-06dd40425126   5Gi        RWO            standard       5m21s
 ```
 
 ``` sh
